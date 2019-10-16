@@ -1,2 +1,2 @@
 # WallNotes
- Back-end CRUD for writting public notes using NodeJS, REST API, and MongoDB
+ Back-end CRUD for write a public notes using NodeJS, REST API, and MongoDB.
