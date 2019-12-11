@@ -4,9 +4,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
 
-require('./routes/note.routes')(app);
+app.use(logger('dev'));
+app.use(express.urlencoded({ extended: true}));
+app.use(express.json());
+app.use(cookieParser());
 
-const indexRouter = require('./routes/index.routes');
+require('./app/routes/note.routes')(app);
+
+const indexRouter = require('./app/routes/index.routes');
 
 //db config
 const dbConfig = require('./config/database.config');
@@ -15,36 +20,31 @@ mongoose.Promise = global.Promise;
 
 //db connect
 mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 }).then( () =>{
-    console.log('Successfully connected to database');
+	console.log('Successfully connected to database');
 }).catch(err => {
-    console.log('Cannot connect to database', err);
-    process.exit();
+	console.log('Cannot connect to database', err);
+	process.exit();
 });
-
-app.use(logger('dev'));
-app.use(express.urlencoded({ extended: true}));
-app.use(express.json());
-app.use(cookieParser());
 
 app.use('/', indexRouter);
 
 app.use((req, res, next) => {
-    next(createError(404));
+	next(createError(404));
 });
 
 
 app.use( (err, req, res, next) => {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    res.status(err.status || 500);
-    //res.render('error');
-    res.json({
-        "error": err.message,
-        "status": err.status
-    });
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
+	res.status(err.status || 500);
+	//res.render('error');
+	res.json({
+		"error": err.message,
+		"status": err.status
+	});
 });
 
 module.exports = app;
