@@ -29,7 +29,7 @@ mongoose.connect(dbConfig.url, {
 	process.exit();
 });
 
-app.use('/', indexRouter);
+app.use('/api', indexRouter);
 
 app.use((req, res, next) => {
 	next(createError(404));
