@@ -10,14 +10,14 @@
   "author": "mazkaaa",
   "license": "ISC",
   "dependencies": {
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "^1.4.5",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
-    "mongoose": "^5.8.0",
-    "morgan": "^1.9.1"
+    "mongoose": "^5.9.9",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "eslint": "^6.7.2"
+    "eslint": "^6.8.0"
   }
 }
