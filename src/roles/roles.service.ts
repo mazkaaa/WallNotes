@@ -50,7 +50,7 @@ export class RolesService {
     return findResults;
   }
 
-  async findOne(id: string) {
+  async findById(id: string) {
     const result = await this.prismaService.role.findUnique({
       where: {
         id: id,
