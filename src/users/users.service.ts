@@ -38,24 +38,49 @@ export class UsersService {
   }
 
   async findAll() {
-    const results = await this.prismaService.user.findMany({
-
-    })
-    return {
-
-    }
+    const result = await this.prismaService.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        birth_date: true,
+        gender: true,
+        roleId: true,
+        role: true,
+        notes: true,
+        disabled: true,
+        createdAt: true,
+        updatedAt: true,
+        password: false
+      },
+    });
+    return result
   }
 
-  async findOne(email: string) {
+  async findOne(id: string) {
     const result = await this.prismaService.user.findUnique({
       where: {
-        email: email
-      }
-    })
+        id: id,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        birth_date: true,
+        gender: true,
+        roleId: true,
+        role: true,
+        notes: true,
+        disabled: true,
+        createdAt: true,
+        updatedAt: true,
+        password: false
+      },
+    });
     if (result) {
       return result
     }
-    throw new NotFoundException('Email not found!')
+    throw new NotFoundException('User not found!')
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

@@ -6,10 +6,14 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UsersService, private readonly jwtService: JwtService) { }
+  constructor(private readonly prismaService: PrismaService, private readonly jwtService: JwtService) { }
 
   async signIn(email: string, password: string) {
-    const findResult = await this.userService.findOne(email);
+    const findResult = await this.prismaService.user.findUnique({
+      where: {
+        email: email
+      }
+    });
     if (findResult) {
       const isMatch = await bcrypt.compare(password, findResult.password);
       if (isMatch) {

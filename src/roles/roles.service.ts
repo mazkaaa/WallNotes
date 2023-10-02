@@ -40,7 +40,21 @@ export class RolesService {
       where: {
         ...or,
       },
-      include: { users: true },
+      include: {
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            birth_date: true,
+            disabled: true,
+            gender: true,
+            roleId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
       take: take || undefined,
       skip: skip || undefined,
       orderBy: {
