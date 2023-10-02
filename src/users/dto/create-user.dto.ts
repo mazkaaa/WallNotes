@@ -1,28 +1,48 @@
-import { IsBoolean, IsDateString, IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsDateString, IsEmail, IsEnum, IsIn, IsNotEmpty, IsString } from "class-validator";
 
+enum Gender {
+  "male" = "male",
+  "female" = "female"
+}
 export class CreateUserDto {
+  /**
+   * User email
+   * @example "johndoe@gmail.com"
+   */
   @IsEmail()
-  email: string
+  email: string;
 
+  /**
+   * User name
+   * @example "John Doe"
+   */
   @IsString()
-  name: string
+  name: string;
 
+  /**
+   * User password
+   * @example "test321!"
+   */
   @IsNotEmpty()
   @IsString()
-  password: string
+  password: string;
 
+  /**
+   * Gender
+   * @example 'male'
+   */
   @IsNotEmpty()
   @IsString()
-  gender: string
+  @IsEnum(Gender)
+  gender: Gender;
 
   @IsDateString()
-  birth_date: string
+  birth_date: string;
 
   @IsBoolean()
-  disabled: boolean
+  disabled: boolean;
 
   @IsNotEmpty()
   @IsString()
-  roleId: string
-
+  roleId: string;
 }
