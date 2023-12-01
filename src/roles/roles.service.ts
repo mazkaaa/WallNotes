@@ -26,8 +26,8 @@ export class RolesService {
   }
 
   async findAll(
-    @Query('take') take?: number,
-    @Query('skip') skip?: number,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
     @Query('searchString') searchString?: string,
     @Query('orderBy') orderBy?: 'asc' | 'desc',
   ) {
@@ -41,22 +41,10 @@ export class RolesService {
         ...or,
       },
       include: {
-        users: {
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            birth_date: true,
-            disabled: true,
-            gender: true,
-            roleId: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
+        users: false
       },
-      take: take || undefined,
-      skip: skip || undefined,
+      take: parseInt(take.toString()),
+      skip: parseInt(skip.toString()),
       orderBy: {
         name: orderBy,
       },
@@ -69,6 +57,22 @@ export class RolesService {
       where: {
         id: id,
       },
+      
+      // dont include user's password
+      include: {
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            birth_date: true,
+            createdAt: true,
+            disabled: true,
+            gender: true,
+            updatedAt: true,
+          }
+        }
+      }
     })
     if (result) {
       return result
