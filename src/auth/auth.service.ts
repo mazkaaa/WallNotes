@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -27,9 +28,48 @@ export class AuthService {
           })
         }
       }
-      throw new HttpException('Password is wrong!', HttpStatus.UNAUTHORIZED)
+      throw new UnauthorizedException("Password is wrong!");
     }
-    throw new HttpException('Email not found!', HttpStatus.NOT_FOUND)
+    throw new NotFoundException("Email not found!");
+  }
 
+  async signUp({
+    birth_date,
+    confirmPassword,
+    email,
+    gender,
+    name,
+    password
+  }: SignUpDto) {
+    const findResult = await this.prismaService.user.findUnique({
+      where: {
+        email: email
+      }
+    });
+    if (findResult) {
+      throw new BadRequestException("Email already existed!");
+    }
+    if (password === confirmPassword) {
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      const defaultRole = await this.prismaService.role.findFirst({
+        where: {
+          name: "default"
+        }
+      })
+      if (!defaultRole) {
+        throw new NotFoundException("Default role not existed in database!")
+      }
+      const result = await this.prismaService.user.create({
+        data: {
+          email: email,
+          password: hashedPassword,
+          birth_date: birth_date,
+          gender: gender,
+          name: name,
+          roleId: defaultRole.id
+        }
+      })
+      return result
+    }
   }
 }
