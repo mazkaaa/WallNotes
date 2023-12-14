@@ -7,7 +7,7 @@ import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, PrismaService],
+  providers: [UsersService],
   exports: [UsersService],
   imports: [RolesModule]
 })
