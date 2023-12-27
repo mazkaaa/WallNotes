@@ -1,8 +1,8 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma.service';
-import { RolesService } from 'src/roles/roles.service';
+import { PrismaService } from '../prisma.service';
+import { RolesService } from '../roles/roles.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
