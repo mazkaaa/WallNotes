@@ -214,3 +214,4 @@ describe("RolesService", () => {
       where: { id: roleId },
     });
   });
+});
