@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { PrismaModule } from 'src/prisma.module';
-import { RolesModule } from 'src/roles/roles.module';
-import { JwtModule } from '@nestjs/jwt';
+import { Test, TestingModule } from "@nestjs/testing";
+import { UsersController } from "./users.controller";
+import { UsersService } from "./users.service";
+import { PrismaModule } from "src/prisma.module";
+import { RolesModule } from "src/roles/roles.module";
+import { JwtModule } from "@nestjs/jwt";
 
-describe('UsersController', () => {
+describe("UsersController", () => {
   let controller: UsersController;
 
   beforeEach(async () => {
@@ -28,7 +28,7 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

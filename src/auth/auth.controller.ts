@@ -1,10 +1,16 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
-import { SignInDto } from './dto/sign-in.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignUpDto } from './dto/sign-up.dto';
+import { Body, Controller, Post, UseInterceptors } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { TransformInterceptor } from "src/interceptors/transform.interceptor";
+import { SignInDto } from "./dto/sign-in.dto";
+import { LoggingInterceptor } from "src/interceptors/logging.interceptor";
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
+import { SignUpDto } from "./dto/sign-up.dto";
 
 @ApiTags("Auth")
 @Controller("auth")
@@ -27,12 +33,12 @@ export class AuthController {
 
   /**
    * Signup to create the account for the wallnotes
-   * @param signUpDto 
-   * @returns 
+   * @param signUpDto
+   * @returns
    */
   @Post("signup")
   @UseInterceptors(TransformInterceptor)
   signUp(@Body() signUpDto: SignUpDto) {
-    return this.authService.signUp(signUpDto)
+    return this.authService.signUp(signUpDto);
   }
 }

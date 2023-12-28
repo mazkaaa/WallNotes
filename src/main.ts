@@ -1,19 +1,23 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerCustomOptions, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
-import helmet from 'helmet';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ValidationPipe } from "@nestjs/common";
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerDocumentOptions,
+  SwaggerModule,
+} from "@nestjs/swagger";
+import helmet from "helmet";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-    }),
+    })
   );
-  
-  app.use(helmet())
 
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle("Wallnotes API")
@@ -30,12 +34,11 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    
   };
 
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup("api", app, document, customOptions);
-  
+
   await app.listen(3000);
 }
 bootstrap();

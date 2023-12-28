@@ -1,11 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, BadRequestException, UseGuards, Query } from '@nestjs/common';
-import { RolesService } from './roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { TransformInterceptor } from '../interceptors/transform.interceptor';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { FindAllRoleDto } from './dto/findAll-role.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  BadRequestException,
+  UseGuards,
+  Query,
+} from "@nestjs/common";
+import { RolesService } from "./roles.service";
+import { CreateRoleDto } from "./dto/create-role.dto";
+import { UpdateRoleDto } from "./dto/update-role.dto";
+import { TransformInterceptor } from "../interceptors/transform.interceptor";
+import { AuthGuard } from "src/auth/auth.guard";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { FindAllRoleDto } from "./dto/findAll-role.dto";
 
 @Controller("roles")
 @ApiBearerAuth()
@@ -24,7 +36,12 @@ export class RolesController {
   @UseInterceptors(TransformInterceptor)
   @UseGuards(AuthGuard)
   findAll(@Query() findAllDto: FindAllRoleDto) {
-    return this.rolesService.findAll(findAllDto.take, findAllDto.skip, findAllDto.searchString, findAllDto.orderBy);
+    return this.rolesService.findAll(
+      findAllDto.take,
+      findAllDto.skip,
+      findAllDto.searchString,
+      findAllDto.orderBy
+    );
   }
 
   @Get(":id")

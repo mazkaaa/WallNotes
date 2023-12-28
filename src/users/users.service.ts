@@ -1,28 +1,37 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma.service';
-import { RolesService } from '../roles/roles.service';
-import * as bcrypt from 'bcrypt';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { PrismaService } from "../prisma.service";
+import { RolesService } from "../roles/roles.service";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService, private readonly roleService: RolesService) {}
-  
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly roleService: RolesService
+  ) {}
+
   async create(createUserDto: CreateUserDto) {
     const findEmail = await this.prismaService.user.findUnique({
       where: {
-        email: createUserDto.email
-      }
-    })
-    const findRole = await this.roleService.findById(createUserDto.roleId)
+        email: createUserDto.email,
+      },
+    });
+    const findRole = await this.roleService.findById(createUserDto.roleId);
     if (findEmail) {
-      throw new BadRequestException('Email already existed!')
+      throw new BadRequestException("Email already existed!");
     }
     if (!findRole) {
-      throw new BadRequestException('Assigned role not existed!')
+      throw new BadRequestException("Assigned role not existed!");
     }
-    const hashedPassword = bcrypt.hashSync(createUserDto.password, 10)
+    const hashedPassword = bcrypt.hashSync(createUserDto.password, 10);
     const createResult = await this.prismaService.user.create({
       data: {
         email: createUserDto.email,
@@ -30,11 +39,10 @@ export class UsersService {
         name: createUserDto.name,
         birth_date: createUserDto.birth_date,
         gender: createUserDto.gender,
-        roleId: createUserDto.roleId
+        roleId: createUserDto.roleId,
       },
-    })
-    return createResult
-
+    });
+    return createResult;
   }
 
   async findAll() {
@@ -51,10 +59,10 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        password: false
+        password: false,
       },
     });
-    return result
+    return result;
   }
 
   async findOne(id: string) {
@@ -74,32 +82,32 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        password: false
+        password: false,
       },
     });
     if (result) {
-      return result
+      return result;
     }
-    throw new NotFoundException('User not found!')
+    throw new NotFoundException("User not found!");
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const findId = await this.prismaService.user.findUnique({
       where: {
-        id: id
-      }
-    })
+        id: id,
+      },
+    });
     if (findId) {
       return this.prismaService.user.update({
         data: {
-          ...updateUserDto
+          ...updateUserDto,
         },
         where: {
-          id: id
-        }
-      })
+          id: id,
+        },
+      });
     }
-    throw new NotFoundException('User with this id not existed!')
+    throw new NotFoundException("User with this id not existed!");
   }
 
   remove(id: number) {

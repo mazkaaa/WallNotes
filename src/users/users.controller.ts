@@ -1,10 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UseGuards,
+} from "@nestjs/common";
+import { UsersService } from "./users.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { TransformInterceptor } from "src/interceptors/transform.interceptor";
+import { AuthGuard } from "src/auth/auth.guard";
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from "@nestjs/swagger";
 
 @Controller("users")
 @ApiBearerAuth()
@@ -14,8 +30,8 @@ export class UsersController {
 
   /**
    * Create user data
-   * @param createUserDto 
-   * @returns 
+   * @param createUserDto
+   * @returns
    */
   @Post()
   @UseInterceptors(TransformInterceptor)
@@ -60,7 +76,7 @@ export class UsersController {
   /**
    * Remove user data from database
    * @param id user ID
-   * @returns 
+   * @returns
    */
   @Delete(":id")
   @UseInterceptors(TransformInterceptor)
