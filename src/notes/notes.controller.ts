@@ -11,7 +11,7 @@ import {
 import { NotesService } from "./notes.service";
 import { CreateNoteDto } from "./dto/create-note.dto";
 import { UpdateNoteDto } from "./dto/update-note.dto";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "src/auth/guards/auth.guard";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 @Controller("notes")

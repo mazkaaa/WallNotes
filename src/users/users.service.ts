@@ -35,7 +35,7 @@ export class UsersService {
     const createResult = await this.prismaService.user.create({
       data: {
         email: createUserDto.email,
-        password: hashedPassword,
+        // password: hashedPassword,
         name: createUserDto.name,
         birth_date: createUserDto.birth_date,
         gender: createUserDto.gender,
@@ -59,7 +59,7 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        password: false,
+        // password: false,
       },
     });
     return result;
@@ -82,7 +82,7 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        password: false,
+        // password: false,
       },
     });
     if (result) {

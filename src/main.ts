@@ -17,7 +17,12 @@ async function bootstrap() {
     })
   );
 
-  app.use(helmet());
+  // app.use(helmet());
+
+  app.enableCors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  });
 
   const config = new DocumentBuilder()
     .setTitle("Wallnotes API")

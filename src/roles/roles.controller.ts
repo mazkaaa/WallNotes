@@ -15,7 +15,7 @@ import { RolesService } from "./roles.service";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { TransformInterceptor } from "../interceptors/transform.interceptor";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "src/auth/guards/auth.guard";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { FindAllRoleDto } from "./dto/findAll-role.dto";
 
