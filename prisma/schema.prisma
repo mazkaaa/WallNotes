@@ -22,7 +22,6 @@ model Note {
 model User {
   id String @id @default(uuid())
   email String @unique
-  name String?
   gender String?
   birth_date String?
   disabled Boolean?

@@ -29,31 +29,6 @@ import { Response } from "express";
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // /**
-  //  * Login for getting the token that will be used for the other endpoints
-  //  * @param signInDto
-  //  * @returns
-  //  */
-  // @Post("login")
-  // @ApiOperation({
-  //   summary: "Login user",
-  // })
-  // @UseInterceptors(TransformInterceptor)
-  // signIn(@Body() signInDto: SignInDto) {
-  //   return this.authService.signIn(signInDto.email, signInDto.password);
-  // }
-
-  // /**
-  //  * Signup to create the account for the wallnotes
-  //  * @param signUpDto
-  //  * @returns
-  //  */
-  // @Post("signup")
-  // @UseInterceptors(TransformInterceptor)
-  // signUp(@Body() signUpDto: SignUpDto) {
-  //   return this.authService.signUp(signUpDto);
-  // }
-
   @Get("google")
   @UseGuards(GoogleOauthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -61,8 +36,16 @@ export class AuthController {
 
   @Get("google/redirect")
   @UseGuards(GoogleOauthGuard)
+  @UseInterceptors(TransformInterceptor)
   async googleAuthCallback(@Req() req, @Res() res: Response) {
-    const token = await this.authService.signIn(req.user);
+    const userData: {
+      email: string;
+      firstName: string;
+      lastName: string;
+      picture: string;
+      accessToken: string;
+    } = req.user;
+    const token = await this.authService.signIn(userData);
 
     res.cookie("access_token", token, {
       maxAge: 2592000000,
@@ -70,6 +53,9 @@ export class AuthController {
       secure: false,
     });
 
-    return res.status(HttpStatus.OK);
+    return res.json({
+      email: userData.email,
+      access_token: token.access_token,
+    });
   }
 }
