@@ -1,8 +1,16 @@
-import { IsBoolean, IsDateString, IsEmail, IsEnum, IsIn, IsNotEmpty, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsIn,
+  IsNotEmpty,
+  IsString,
+} from "class-validator";
 
 enum Gender {
   "male" = "male",
-  "female" = "female"
+  "female" = "female",
 }
 export class CreateUserDto {
   /**
