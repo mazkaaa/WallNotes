@@ -3,7 +3,7 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 enum orderByEnum {
   asc = "asc",
-  desc = "desc"
+  desc = "desc",
 }
 export class FindAllRoleDto {
   @ApiProperty({
@@ -12,18 +12,18 @@ export class FindAllRoleDto {
   take: number;
 
   @ApiProperty({
-    required: true
+    required: true,
   })
-  skip: number
-
-  @ApiProperty({
-    required: false
-  })
-  searchString: string
+  skip: number;
 
   @ApiProperty({
     required: false,
-    enum: orderByEnum
   })
-  orderBy: orderByEnum
+  searchString: string;
+
+  @ApiProperty({
+    required: false,
+    enum: orderByEnum,
+  })
+  orderBy: orderByEnum;
 }

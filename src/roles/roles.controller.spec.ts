@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RolesController } from './roles.controller';
-import { RolesService } from './roles.service';
-import { PrismaService } from '../../src/prisma.service';
-import { JwtModule } from '@nestjs/jwt';
+import { Test, TestingModule } from "@nestjs/testing";
+import { RolesController } from "./roles.controller";
+import { RolesService } from "./roles.service";
+import { PrismaService } from "../../src/prisma.service";
+import { JwtModule } from "@nestjs/jwt";
 
-describe('RolesController', () => {
+describe("RolesController", () => {
   let controller: RolesController;
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('RolesController', () => {
     controller = module.get<RolesController>(RolesController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

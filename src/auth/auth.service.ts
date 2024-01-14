@@ -1,74 +1,83 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dto/sign-up.dto';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
+import { PrismaService } from "../prisma.service";
+import { JwtService } from "@nestjs/jwt";
+import { SignUpDto } from "./dto/sign-up.dto";
+import { SignInDto } from "./dto/sign-in.dto";
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prismaService: PrismaService, private readonly jwtService: JwtService) { }
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService
+  ) {}
 
-  async signIn(email: string, password: string) {
+  async signIn(user: SignInDto) {
+    if (!user) {
+      throw new BadRequestException("User payload not found!");
+    }
+    const userIsExisted = await this.prismaService.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+    if (!userIsExisted) {
+      return this.register(user);
+    }
+    const payload = {
+      sub: userIsExisted.id,
+      email: userIsExisted.email,
+    };
+    return {
+      access_token: await this.jwtService.signAsync(payload, {
+        secret: process.env.JWT_SECRET,
+      }),
+    };
+  }
+
+  async findUserByEmail(email: string) {
     const findResult = await this.prismaService.user.findUnique({
       where: {
-        email: email
-      }
+        email: email,
+      },
     });
     if (findResult) {
-      const isMatch = await bcrypt.compare(password, findResult.password);
-      if (isMatch) {
-        const payload = {
-          sub: findResult.id,
-          email: findResult.email
-        }
-        return {
-          access_token: await this.jwtService.signAsync(payload, {
-            secret: process.env.JWT_SECRET
-          })
-        }
-      }
-      throw new UnauthorizedException("Password is wrong!");
+      return findResult;
     }
     throw new NotFoundException("Email not found!");
   }
 
-  async signUp({
-    birth_date,
-    confirmPassword,
-    email,
-    gender,
-    name,
-    password
-  }: SignUpDto) {
-    const findResult = await this.prismaService.user.findUnique({
+  async register(user: SignUpDto) {
+    const defaultRole = await this.prismaService.role.findFirst({
       where: {
-        email: email
-      }
+        name: "default",
+      },
     });
-    if (findResult) {
-      throw new BadRequestException("Email already existed!");
+    if (!defaultRole) {
+      throw new NotFoundException("Default role not existed in database!");
     }
-    if (password === confirmPassword) {
-      const hashedPassword = bcrypt.hashSync(password, 10);
-      const defaultRole = await this.prismaService.role.findFirst({
-        where: {
-          name: "default"
-        }
-      })
-      if (!defaultRole) {
-        throw new NotFoundException("Default role not existed in database!")
-      }
+    try {
       const result = await this.prismaService.user.create({
         data: {
-          email: email,
-          password: hashedPassword,
-          birth_date: birth_date,
-          gender: gender,
-          name: name,
-          roleId: defaultRole.id
-        }
-      })
-      return result
+          email: user.email,
+          roleId: defaultRole.id,
+        },
+      });
+      const payload = {
+        sub: result.id,
+        email: result.email,
+      };
+      return {
+        access_token: await this.jwtService.signAsync(payload, {
+          secret: process.env.JWT_SECRET,
+        }),
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
   }
 }
