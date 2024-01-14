@@ -13,7 +13,6 @@ import { PrismaService } from "../prisma.service";
 @Injectable()
 export class RolesService {
   constructor(private readonly prismaService: PrismaService) {}
-
   async create(createRoleDto: CreateRoleDto) {
     const findResult = await this.prismaService.role.findUnique({
       where: {
