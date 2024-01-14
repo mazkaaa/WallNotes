@@ -35,8 +35,6 @@ export class UsersService {
     const createResult = await this.prismaService.user.create({
       data: {
         email: createUserDto.email,
-        // password: hashedPassword,
-        name: createUserDto.name,
         birth_date: createUserDto.birth_date,
         gender: createUserDto.gender,
         roleId: createUserDto.roleId,
@@ -50,7 +48,6 @@ export class UsersService {
       select: {
         id: true,
         email: true,
-        name: true,
         birth_date: true,
         gender: true,
         roleId: true,
@@ -73,7 +70,6 @@ export class UsersService {
       select: {
         id: true,
         email: true,
-        name: true,
         birth_date: true,
         gender: true,
         roleId: true,

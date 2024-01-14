@@ -71,7 +71,6 @@ export class RolesService {
           select: {
             id: true,
             email: true,
-            name: true,
             birth_date: true,
             createdAt: true,
             disabled: true,
