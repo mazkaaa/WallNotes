@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -9,7 +7,6 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { PrismaService } from "../prisma.service";
 import { RolesService } from "../roles/roles.service";
-import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UsersService {
@@ -31,7 +28,6 @@ export class UsersService {
     if (!findRole) {
       throw new BadRequestException("Assigned role not existed!");
     }
-    const hashedPassword = bcrypt.hashSync(createUserDto.password, 10);
     const createResult = await this.prismaService.user.create({
       data: {
         email: createUserDto.email,
@@ -56,7 +52,6 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        // password: false,
       },
     });
     return result;
@@ -78,7 +73,6 @@ export class UsersService {
         disabled: true,
         createdAt: true,
         updatedAt: true,
-        // password: false,
       },
     });
     if (result) {

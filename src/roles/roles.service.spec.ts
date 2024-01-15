@@ -1,6 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { RolesService } from "./roles.service";
-import { PrismaModule } from "src/prisma.module";
 import { PrismaService } from "src/prisma.service";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { BadRequestException, NotFoundException } from "@nestjs/common";

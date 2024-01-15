@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  BadRequestException,
   UseGuards,
   Query,
 } from "@nestjs/common";
@@ -16,7 +15,7 @@ import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { TransformInterceptor } from "../interceptors/transform.interceptor";
 import { AuthGuard } from "src/auth/guards/auth.guard";
-import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { FindAllRoleDto } from "./dto/findAll-role.dto";
 
 @Controller("roles")
