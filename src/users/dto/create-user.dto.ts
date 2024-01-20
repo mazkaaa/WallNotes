@@ -3,15 +3,10 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
-  IsIn,
   IsNotEmpty,
   IsString,
 } from "class-validator";
 
-enum Gender {
-  "male" = "male",
-  "female" = "female",
-}
 export class CreateUserDto {
   /**
    * User email
@@ -21,28 +16,12 @@ export class CreateUserDto {
   email: string;
 
   /**
-   * User name
-   * @example "John Doe"
-   */
-  @IsString()
-  name: string;
-
-  /**
-   * User password
-   * @example "test321!"
-   */
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
-  /**
    * Gender
    * @example 'male'
    */
   @IsNotEmpty()
   @IsString()
-  @IsEnum(Gender)
-  gender: Gender;
+  gender: string;
 
   @IsDateString()
   birth_date: string;

@@ -100,7 +100,19 @@ export class UsersService {
     throw new NotFoundException("User with this id not existed!");
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const findId = await this.prismaService.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (findId) {
+      return this.prismaService.user.delete({
+        where: {
+          id: id,
+        },
+      });
+    }
+    return new NotFoundException("User with this id not existed!");
   }
 }
